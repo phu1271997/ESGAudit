@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Report Details — ESGAudit</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-container">
+      <a href="index.html" class="logo-link">
+        <img src="assets/logo.svg" alt="ESGAudit Logo" class="logo-img">
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Public Registry</a>
+        <a href="submit-audit.html">Submit Report</a>
+        <a href="investor-dashboard.html">Investor Portal</a>
+        <a href="whistleblower.html">Whistleblower Bounty</a>
+        <button id="wallet-btn" class="btn btn-secondary" onclick="connectWallet()">
+          <i data-lucide="wallet"></i> Connect Wallet
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Detailed Header -->
+  <section class="audit-detail-header">
+    <div class="container detail-header-flex">
+      <div class="detail-company-meta">
+        <h1 id="company-name-title" class="serif-title">Loading Company Audit...</h1>
+        <div class="detail-meta-list">
+          <div class="detail-meta-item">
+            <i data-lucide="file-check"></i> <span id="audit-id-lbl">Audit ID: #--</span>
+          </div>
+          <div class="detail-meta-item">
+            <i data-lucide="calendar"></i> <span id="audit-date-lbl">Date: --/--/----</span>
+          </div>
+          <div class="detail-meta-item">
+            <i data-lucide="check-square"></i> <span id="audit-scope-lbl">Scope: ALL</span>
+          </div>
+        </div>
+      </div>
+      <div id="challenge-btn-wrapper">
+        <!-- Generated dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    
+    <!-- Top Verdict Badge & Overall Score Section -->
+    <div class="score-summary-grid">
+      
+      <!-- Overall Score Card -->
+      <div class="overall-score-card">
+        <h3>ESG Audit Score</h3>
+        <!-- Dynamic circular progress SVG -->
+        <svg viewBox="0 0 36 36" class="circular-chart" id="circular-chart-color">
+          <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          <path class="circle-fill" id="circle-fill-path" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          <text x="18" y="20.35" class="percentage" id="overall-score-text">0%</text>
+        </svg>
+        <span class="overall-verdict-label" id="overall-verdict-text">NONE</span>
+        <span id="badge-expiry-lbl" style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">Expiry: --/--/----</span>
+      </div>
+
+      <!-- Verdict Badge Stamp Display -->
+      <div class="card" style="display: flex; align-items: center; justify-content: center; background-color: rgba(13, 22, 19, 0.35);">
+        <div class="stamp-container">
+          <img src="assets/badge-green.svg" alt="Verdict Stamp" class="stamp" id="stamp-badge-img">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pillars Breakdown & Data Quality Checklist -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 32px; margin-bottom: 48px;">
+      <!-- Pillars progress bars -->
+      <div class="pillars-breakdown-card">
+        <h3 class="serif-title" style="font-size: 20px; margin-bottom: 24px;">Pillars Evaluation</h3>
+        
+        <!-- E -->
+        <div class="pillar-score-row">
+          <div class="pillar-row-header">
+            <span class="pillar-label"><i data-lucide="leaf" style="color: var(--success);"></i> Environmental (E)</span>
+            <span id="pillar-score-e">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="pillar-fill-e" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- S -->
+        <div class="pillar-score-row">
+          <div class="pillar-row-header">
+            <span class="pillar-label"><i data-lucide="users" style="color: var(--warning);"></i> Social (S)</span>
+            <span id="pillar-score-s">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="pillar-fill-s" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- G -->
+        <div class="pillar-score-row">
+          <div class="pillar-row-header">
+            <span class="pillar-label"><i data-lucide="scale" style="color: #60a5fa;"></i> Governance (G)</span>
+            <span id="pillar-score-g">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="pillar-fill-g" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confidence & General Data metrics -->
+      <div class="overall-score-card" style="padding: 24px; text-align: left; align-items: flex-start; justify-content: flex-start;">
+        <h4 style="font-size: 14px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; letter-spacing: 0.5px;">Audit Integrity</h4>
+        <div style="font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 4px;" id="confidence-score-lbl">0%</div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">AI Consensus Confidence Meter</p>
+        
+        <div style="width: 100%; border-top: 1px solid var(--primary-border); padding-top: 16px;">
+          <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px;">
+            <span style="color: var(--text-muted);">Auditor Firm Tier</span>
+            <span style="font-weight: 600; color: #fff;">Consensus Leader (Deloitte Rubric)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 13px;">
+            <span style="color: var(--text-muted);">Consensus Validators</span>
+            <span style="font-weight: 600; color: #fff;">7 Nodes (GenVM)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Claims Verification Table Section -->
+    <section class="claims-section">
+      <h3 class="serif-title" style="font-size: 22px; margin-bottom: 8px;">Claims Verification Registry</h3>
+      <p style="color: var(--text-muted); font-size: 14px;">Cross-matching official declarations vs verified sources.</p>
+      
+      <table class="claims-table">
+        <thead>
+          <tr>
+            <th>Company Claim</th>
+            <th>Evidence Discovered</th>
+            <th>Verification Status</th>
+          </tr>
+        </thead>
+        <tbody id="claims-table-body">
+          <!-- Populated dynamically -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Greenwashing Indicators & Red Flags Grid -->
+    <section class="indicators-grid" id="warnings-section" style="margin-top: 48px;">
+      
+      <!-- Greenwashing Indicators -->
+      <div>
+        <div class="indicator-title-section">
+          <i data-lucide="alert-circle" style="color: var(--warning);"></i>
+          <h3 class="serif-title" style="font-size: 20px; margin-bottom: 0;">Greenwashing Indicators</h3>
+        </div>
+        <div class="indicator-card-list" id="indicators-list">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Red Flags -->
+      <div>
+        <div class="indicator-title-section">
+          <i data-lucide="flag" style="color: var(--danger);"></i>
+          <h3 class="serif-title" style="font-size: 20px; margin-bottom: 0;">Red Flags Raised</h3>
+        </div>
+        <div class="red-flags-card-list" id="redflags-list">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Data Quality Checklist -->
+    <section style="margin-top: 48px;">
+      <h3 class="serif-title" style="font-size: 22px; margin-bottom: 8px;">Compliance Disclosures & Standards Checklist</h3>
+      <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Verification of specific framework metrics declared.</p>
+      <div class="data-quality-grid" id="data-quality-grid">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+
+    <!-- Recommendations & Sources Grid -->
+    <div class="recommendations-sources-grid" style="margin-top: 48px;">
+      
+      <!-- Actionable recommendations -->
+      <div class="recommendations-card">
+        <h3 class="serif-title" style="font-size: 20px; margin-bottom: 20px; color: var(--primary-hover);">Improvement Recommendations</h3>
+        <ul class="recommendation-list" id="recommendations-list">
+          <!-- Populated dynamically -->
+        </ul>
+      </div>
+
+      <!-- Sources used -->
+      <div class="sources-card">
+        <h3 class="serif-title" style="font-size: 20px; margin-bottom: 20px;">Evidence Sources Scraped</h3>
+        <div class="source-list" id="sources-list">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- AI Reasoning Section -->
+    <section class="reasoning-section">
+      <div class="reasoning-title">Auditor Consensus Reasoning</div>
+      <div class="reasoning-text" id="reasoning-text-content">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+
+    <!-- Action Bar & Embed Badge Widget -->
+    <section class="detail-actions-bar">
+      <div class="detail-actions-text">
+        <h4>Publish & Share Badge</h4>
+        <p>Integrate this dynamic badge on your official sustainability pages to prove transparency.</p>
+      </div>
+      <div style="display: flex; gap: 16px;">
+        <button class="btn btn-secondary" onclick="openEmbedModal()">
+          <i data-lucide="code"></i> Get Embed Code
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Embed Badge Modal -->
+  <div class="modal-overlay" id="embed-modal">
+    <div class="modal">
+      <button class="close-modal" onclick="closeEmbedModal()"><i data-lucide="x"></i></button>
+      <h3 class="serif-title modal-title">Embed Verification Badge</h3>
+      <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Copy the code snippet below to embed the verified badge on your corporate website:</p>
+      <div class="embed-code-box" id="embed-code-content">
+        <!-- Dynamic code -->
+      </div>
+      <button class="btn btn-primary" onclick="copyEmbedCode()">
+        <i data-lucide="copy"></i> Copy to Clipboard
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 ESGAudit. Phát triển trên mạng lưới GenLayer Blockchain.</p>
+        <p>Built for EU CSRD Compliance.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="app.js"></script>
+  <script>
+    let activeAuditId = null;
+    let auditData = null;
+    let details = null;
+
+    function parseQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("id");
+    }
+
+    function loadAuditDetails() {
+      const id = parseQueryParams();
+      if (!id) {
+        window.location.href = "index.html";
+        return;
+      }
+      
+      activeAuditId = id;
+      const audits = getAudits();
+      auditData = audits.find(a => a.id === parseInt(id));
+      
+      if (!auditData) {
+        window.location.href = "index.html";
+        return;
+      }
+      
+      details = JSON.parse(auditData.ai_verdict_json);
+      renderDetails();
+    }
+
+    function renderDetails() {
+      // 1. Titles & Headers
+      document.getElementById("company-name-title").innerText = details.company_name;
+      document.getElementById("audit-id-lbl").innerText = `Audit ID: #${auditData.id}`;
+      document.getElementById("audit-scope-lbl").innerText = `Scope: ${auditData.audit_scope}`;
+      
+      const date = new Date(auditData.created_at);
+      document.getElementById("audit-date-lbl").innerText = `Date: ${date.toLocaleDateString()}`;
+
+      // Challenge Button
+      const challengeWrapper = document.getElementById("challenge-btn-wrapper");
+      challengeWrapper.innerHTML = `
+        <a href="whistleblower.html?audit_id=${auditData.id}" class="btn btn-secondary" style="border-color: var(--danger); color: var(--danger);">
+          <i data-lucide="alert-triangle"></i> Challenge Verdict
+        </a>
+      `;
+
+      // 2. Verdict Badge Stamp
+      const stampImg = document.getElementById("stamp-badge-img");
+      const badgeTypeLower = auditData.badge_type.toLowerCase();
+      stampImg.src = `assets/badge-${badgeTypeLower}.svg`;
+      stampImg.alt = `${auditData.badge_type} VERIFIED`;
+
+      // 3. Overall Score circular progress
+      const score = details.overall_score;
+      document.getElementById("overall-score-text").innerText = `${score}`;
+      
+      const fillPath = document.getElementById("circle-fill-path");
+      fillPath.setAttribute("stroke-dasharray", `${score}, 100`);
+      
+      const chartColor = document.getElementById("circular-chart-color");
+      chartColor.className.baseVal = `circular-chart ${badgeTypeLower}`;
+
+      const verdictText = document.getElementById("overall-verdict-text");
+      verdictText.innerText = details.verdict.replace("_", " ");
+      verdictText.className = `overall-verdict-label ${badgeTypeLower}`;
+      
+      const expiryDate = new Date(auditData.expiry_timestamp);
+      document.getElementById("badge-expiry-lbl").innerText = `Expiry: ${expiryDate.toLocaleDateString()}`;
+
+      // 4. Pillars Breakdown
+      document.getElementById("pillar-score-e").innerText = `${details.pillar_scores.environmental}%`;
+      const fillE = document.getElementById("pillar-fill-e");
+      fillE.style.width = `${details.pillar_scores.environmental}%`;
+      fillE.className = `progress-bar-fill ${getPillarColorClass(details.pillar_scores.environmental)}`;
+
+      document.getElementById("pillar-score-s").innerText = `${details.pillar_scores.social}%`;
+      const fillS = document.getElementById("pillar-fill-s");
+      fillS.style.width = `${details.pillar_scores.social}%`;
+      fillS.className = `progress-bar-fill ${getPillarColorClass(details.pillar_scores.social)}`;
+
+      document.getElementById("pillar-score-g").innerText = `${details.pillar_scores.governance}%`;
+      const fillG = document.getElementById("pillar-fill-g");
+      fillG.style.width = `${details.pillar_scores.governance}%`;
+      fillG.className = `progress-bar-fill ${getPillarColorClass(details.pillar_scores.governance)}`;
+
+      // Integrity Confidence
+      document.getElementById("confidence-score-lbl").innerText = `${details.confidence_score}%`;
+
+      // 5. Claims Table
+      const tableBody = document.getElementById("claims-table-body");
+      tableBody.innerHTML = "";
+      
+      details.claims_verified.forEach(c => {
+        const tr = document.createElement("tr");
+        const statusSpan = c.verified 
+          ? `<span class="verified"><i data-lucide="check-circle-2"></i> Verified</span>`
+          : `<span class="failed"><i data-lucide="x-circle"></i> Flagged / Unverified</span>`;
+          
+        tr.innerHTML = `
+          <td class="claim-col">"${c.claim}"</td>
+          <td class="evidence-col">${c.evidence}</td>
+          <td class="status-col">${statusSpan}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      // 6. Indicators and Red flags
+      const indicatorsList = document.getElementById("indicators-list");
+      indicatorsList.innerHTML = "";
+      if (details.greenwashing_indicators && details.greenwashing_indicators.length > 0) {
+        details.greenwashing_indicators.forEach(ind => {
+          const item = document.createElement("div");
+          item.className = "indicator-item-card";
+          item.innerHTML = `
+            <div class="indicator-badge">${ind.type}</div>
+            <div class="indicator-desc">
+              <h4>Warning Flag</h4>
+              <p>${ind.detail}</p>
+            </div>
+          `;
+          indicatorsList.appendChild(item);
+        });
+      } else {
+        indicatorsList.innerHTML = `
+          <div style="color: var(--text-muted); font-size: 14px; text-align: center; padding: 24px; border: 1px dashed var(--primary-border); border-radius: 8px;">
+            No greenwashing indicators detected. Outstanding compliance.
+          </div>
+        `;
+      }
+
+      const redflagsList = document.getElementById("redflags-list");
+      redflagsList.innerHTML = "";
+      if (details.red_flags && details.red_flags.length > 0) {
+        details.red_flags.forEach(flag => {
+          const item = document.createElement("div");
+          item.className = "red-flag-card";
+          item.innerHTML = `
+            <div class="severity-indicator ${flag.severity.toLowerCase()}">${flag.severity}</div>
+            <div class="indicator-desc" style="flex-grow: 1;">
+              <h4 style="color: #fff;">Flagged Issue</h4>
+              <p>${flag.issue}</p>
+            </div>
+          `;
+          redflagsList.appendChild(item);
+        });
+      } else {
+        redflagsList.innerHTML = `
+          <div style="color: var(--text-muted); font-size: 14px; text-align: center; padding: 24px; border: 1px dashed var(--primary-border); border-radius: 8px;">
+            No critical red flags raised.
+          </div>
+        `;
+      }
+
+      // Hide warnings section entirely if Patagonia / Green (only if empty)
+      if (badgeTypeLower === "green" && (!details.greenwashing_indicators || details.greenwashing_indicators.length === 0) && (!details.red_flags || details.red_flags.length === 0)) {
+        // We can hide it or leave the congratulations messages. Leave them as they are very clean!
+      }
+
+      // 7. Compliance checklist
+      const qualityGrid = document.getElementById("data-quality-grid");
+      qualityGrid.innerHTML = "";
+      
+      const checkboxMapping = [
+        { label: "Scope 1 Emissions Disclosed", val: details.data_quality.scope1_disclosed },
+        { label: "Scope 2 Emissions Disclosed", val: details.data_quality.scope2_disclosed },
+        { label: "Scope 3 Emissions Disclosed", val: details.data_quality.scope3_disclosed },
+        { label: "Third-party Audit Assured", val: details.data_quality.third_party_assured },
+        { label: "Complies with GRI Index", val: details.data_quality.follows_gri },
+        { label: "Complies with TCFD Pillars", val: details.data_quality.follows_tcfd }
+      ];
+      
+      checkboxMapping.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "quality-check-item";
+        const statusClass = item.val ? "passed" : "failed";
+        const iconName = item.val ? "check" : "x";
+        
+        div.innerHTML = `
+          <span class="quality-check-label">${item.label}</span>
+          <div class="quality-check-status ${statusClass}"><i data-lucide="${iconName}"></i></div>
+        `;
+        qualityGrid.appendChild(div);
+      });
+
+      // 8. Recommendations
+      const recList = document.getElementById("recommendations-list");
+      recList.innerHTML = "";
+      details.improvement_recommendations.forEach(rec => {
+        const li = document.createElement("li");
+        li.innerText = rec;
+        recList.appendChild(li);
+      });
+
+      // 9. Sources
+      const srcList = document.getElementById("sources-list");
+      srcList.innerHTML = "";
+      details.evidence_sources_used.forEach((url, index) => {
+        const a = document.createElement("a");
+        a.href = url;
+        a.target = "_blank";
+        a.className = "source-item-link";
+        
+        // Pick domain name as title
+        let domain = url;
+        try {
+          domain = new URL(url).hostname;
+        } catch(e) {}
+        
+        a.innerHTML = `
+          <span>Source #${index + 1}: ${domain}</span>
+          <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+        `;
+        srcList.appendChild(a);
+      });
+
+      // 10. Reasoning Text
+      document.getElementById("reasoning-text-content").innerText = details.auditor_reasoning;
+
+      // 11. Modal Embed Code
+      const absoluteURL = window.location.href.split("?")[0].replace("audit-detail.html", "");
+      const embedCode = `<iframe src="${absoluteURL}assets/badge-${badgeTypeLower}.svg" width="150" height="150" style="border:none;" title="ESGAudit Certificate for ${details.company_name}"></iframe>`;
+      document.getElementById("embed-code-content").innerText = embedCode;
+
+      lucide.createIcons();
+    }
+
+    function getPillarColorClass(score) {
+      if (score >= 80) return "green";
+      if (score >= 50) return "yellow";
+      return "red";
+    }
+
+    // Modal control
+    function openEmbedModal() {
+      document.getElementById("embed-modal").style.display = "flex";
+    }
+    
+    function closeEmbedModal() {
+      document.getElementById("embed-modal").style.display = "none";
+    }
+
+    function copyEmbedCode() {
+      const code = document.getElementById("embed-code-content").innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        showToast("Copied to Clipboard", "Embed HTML iframe code copied successfully.", "success");
+        closeEmbedModal();
+      }).catch(err => {
+        showToast("Error", "Could not copy code snippet.", "danger");
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadAuditDetails();
+    });
+  </script>
+</body>
+</html>

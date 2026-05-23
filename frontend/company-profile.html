@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Profile & Timeline — ESGAudit</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Simulation Header -->
+  <header>
+    <div class="container nav-container">
+      <a href="index.html" class="logo-link">
+        <img src="assets/logo.svg" alt="ESGAudit Logo" class="logo-img">
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Public Registry</a>
+        <a href="submit-audit.html">Submit Report</a>
+        <a href="investor-dashboard.html">Investor Portal</a>
+        <a href="whistleblower.html">Whistleblower Bounty</a>
+        <button id="wallet-btn" class="btn btn-secondary" onclick="connectWallet()">
+          <i data-lucide="wallet"></i> Connect Wallet
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="margin-top: 60px;">
+    
+    <!-- Profile Hero Card -->
+    <div class="company-profile-hero" id="profile-hero">
+      <!-- Generated dynamically -->
+    </div>
+
+    <!-- Audit History Timeline -->
+    <section style="margin-top: 48px;">
+      <h3 class="serif-title timeline-title">Audit Log History</h3>
+      <div class="vertical-timeline" id="timeline-container">
+        <!-- Timeline items generated dynamically -->
+      </div>
+    </section>
+
+    <!-- Continuous Monitoring Switch -->
+    <section class="monitoring-toggle-card">
+      <div class="monitoring-desc">
+        <h3>Premium Continuous Monitoring</h3>
+        <p>Hợp đồng tự động recheck tin tức & báo cáo NGO định kỳ mỗi quý. Phát hiện sớm các rủi ro scandal.</p>
+        <span id="monitoring-expiry-lbl" style="font-size: 12px; color: var(--accent-hover); font-weight: 600; display: block; margin-top: 6px;">
+          Subscription status: INACTIVE
+        </span>
+      </div>
+      <div>
+        <label class="switch">
+          <input type="checkbox" id="monitoring-switch" onchange="toggleSubscription()">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 ESGAudit. Phát triển trên mạng lưới GenLayer Blockchain.</p>
+        <p>Built for EU CSRD Compliance.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="app.js"></script>
+  <script>
+    let activeCompanyName = "Tesla"; // Fallback default
+    
+    function parseQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      const name = params.get("company");
+      if (name) activeCompanyName = name;
+    }
+
+    function loadProfile() {
+      parseQueryParams();
+      const audits = getAudits();
+      
+      // Filter audits belonging to this company
+      const compAudits = audits
+        .filter(a => a.company_name.toLowerCase().includes(activeCompanyName.toLowerCase()) && a.status === "COMPLETED")
+        .sort((a,b) => b.id - a.id); // Latest first
+        
+      if (compAudits.length === 0) {
+        // Redirect or show not found
+        document.getElementById("profile-hero").innerHTML = `<h3 style='color: var(--danger);'>Company Profile Not Found</h3>`;
+        return;
+      }
+      
+      const latestAudit = compAudits[0];
+      const details = JSON.parse(latestAudit.ai_verdict_json);
+      const badgeFile = `assets/badge-${latestAudit.badge_type.toLowerCase()}.svg`;
+
+      // 1. Render Hero Card
+      const hero = document.getElementById("profile-hero");
+      hero.innerHTML = `
+        <div class="profile-main">
+          <span style="font-size: 11px; text-transform: uppercase; color: var(--accent); font-weight: 800; letter-spacing: 1px;">Corporate Profile</span>
+          <h1 class="serif-title" style="margin-top: 4px;">${details.company_name}</h1>
+          <p style="color: var(--text-muted); font-size: 14px;">Industry: ${details.industry} • Location: ${details.country}</p>
+          
+          <div class="profile-stats-row">
+            <div class="profile-stat-box">
+              <h4>${compAudits.length}</h4>
+              <span>Total Audits</span>
+            </div>
+            <div class="profile-stat-box">
+              <h4>${details.overall_score}/100</h4>
+              <span>Latest Score</span>
+            </div>
+            <div class="profile-stat-box">
+              <h4>${details.confidence_score}%</h4>
+              <span>Audit Quality</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-badge-box">
+          <h4>Active Certificate</h4>
+          <img src="${badgeFile}" alt="${latestAudit.badge_type} Badge" style="width: 110px; height: 110px;">
+          <a href="audit-detail.html?id=${latestAudit.id}" class="btn btn-secondary" style="margin-top: 14px; font-size: 11px; padding: 6px 12px;">
+            View Detailed Report
+          </a>
+        </div>
+      `;
+
+      // 2. Render Timeline
+      const timeline = document.getElementById("timeline-container");
+      timeline.innerHTML = "";
+      
+      compAudits.forEach((audit, idx) => {
+        const auditDetails = JSON.parse(audit.ai_verdict_json);
+        const date = new Date(audit.created_at);
+        const activeClass = idx === 0 ? "active" : "";
+        
+        const item = document.createElement("div");
+        item.className = `timeline-item ${activeClass}`;
+        
+        item.innerHTML = `
+          <div class="timeline-item-card">
+            <div class="timeline-item-meta">
+              <h4>ESG Score: ${auditDetails.overall_score}/100 (${auditDetails.verdict.replace("_", " ")})</h4>
+              <p>Audit ID: #${audit.id} • Scope: ${audit.audit_scope} • Date: ${date.toLocaleDateString()}</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <span class="badge-pill ${audit.badge_type.toLowerCase()}">${audit.badge_type}</span>
+              <a href="audit-detail.html?id=${audit.id}" class="btn btn-secondary" style="font-size: 12px; padding: 8px 14px;">
+                View Report
+              </a>
+            </div>
+          </div>
+        `;
+        timeline.appendChild(item);
+      });
+
+      // 3. Render Subscription Status
+      const subs = JSON.parse(localStorage.getItem("esg_subscriptions") || "{}");
+      const isSubbed = subs[details.company_name] && subs[details.company_name] > Date.now();
+      const sw = document.getElementById("monitoring-switch");
+      const subLbl = document.getElementById("monitoring-expiry-lbl");
+      
+      if (isSubbed) {
+        sw.checked = true;
+        const subDate = new Date(subs[details.company_name]);
+        subLbl.innerText = `Subscription Active (Expiry: ${subDate.toLocaleDateString()})`;
+      } else {
+        sw.checked = false;
+        subLbl.innerText = "Subscription Status: INACTIVE";
+      }
+
+      lucide.createIcons();
+    }
+
+    function toggleSubscription() {
+      const sw = document.getElementById("monitoring-switch");
+      const subLbl = document.getElementById("monitoring-expiry-lbl");
+      
+      if (sw.checked) {
+        // Subscribe
+        subscribeMonitoring(activeCompanyName, 12); // Subscribe 12 months
+        const expiry = Date.now() + (12 * 30 * 24 * 3600 * 1000);
+        const subDate = new Date(expiry);
+        subLbl.innerText = `Subscription Active (Expiry: ${subDate.toLocaleDateString()})`;
+      } else {
+        // Remove subscription
+        const subs = JSON.parse(localStorage.getItem("esg_subscriptions") || "{}");
+        delete subs[activeCompanyName];
+        localStorage.setItem("esg_subscriptions", JSON.stringify(subs));
+        subLbl.innerText = "Subscription Status: INACTIVE";
+        showToast("Monitoring Deactivated", "Continuous quarterly monitoring stopped.", "warning");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadProfile();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESGAudit — AI-Powered ESG Verification & Greenwashing Detection on GenLayer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Simulation Header -->
+  <header>
+    <div class="container nav-container">
+      <a href="index.html" class="logo-link">
+        <img src="assets/logo.svg" alt="ESGAudit Logo" class="logo-img">
+      </a>
+      <nav class="nav-links">
+        <a href="index.html" class="active">Public Registry</a>
+        <a href="submit-audit.html">Submit Report</a>
+        <a href="investor-dashboard.html">Investor Portal</a>
+        <a href="whistleblower.html">Whistleblower Bounty</a>
+        <button id="wallet-btn" class="btn btn-secondary" onclick="connectWallet()">
+          <i data-lucide="wallet"></i> Connect Wallet
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="serif-title">AI Audits ESG Reports.<br>Detects Greenwashing. On-Chain. Forever.</h1>
+      <p>$50K Big4 audits in 30 minutes — for 1% of the cost. Powered by GenLayer Intelligent Contracts.</p>
+      <div class="hero-ctas">
+        <a href="submit-audit.html" class="btn btn-primary">
+          <i data-lucide="file-text"></i> Start New Audit
+        </a>
+        <a href="#registry-section" class="btn btn-secondary">
+          <i data-lucide="search"></i> Browse Registry
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Banner -->
+  <section class="trust-banner">
+    <div class="container">
+      <p>Compliant with Global ESG Frameworks</p>
+      <div class="standards-logos">
+        <div class="standard-item">GRI Standard</div>
+        <div class="standard-item">SASB Board</div>
+        <div class="standard-item">TCFD Disclosures</div>
+        <div class="standard-item">EU CSRD Ready</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="container">
+    <div class="stats-banner">
+      <div class="stat-card">
+        <h3>1,247</h3>
+        <p>Audits Completed</p>
+      </div>
+      <div class="stat-card alert-stat">
+        <h3>$847K</h3>
+        <p>Greenwashing Fees Flagged</p>
+      </div>
+      <div class="stat-card">
+        <h3>342</h3>
+        <p>GREEN Verified Badges</p>
+      </div>
+      <div class="stat-card warn-stat">
+        <h3>78</h3>
+        <p>RED Flag Warnings</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="container" style="margin-top: 60px;">
+    <h2 class="serif-title section-title">How It Works</h2>
+    <div class="how-it-works-grid">
+      <div class="how-step">
+        <div class="step-num">1</div>
+        <h4>Submit Report</h4>
+        <p>Doanh nghiệp gửi URL báo cáo ESG và tối thiểu 3 nguồn minh chứng đi kèm.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">2</div>
+        <h4>AI Web-Render</h4>
+        <p>Hợp đồng GenLayer tự động đọc dữ liệu web, đối soát chéo tin tức & báo cáo NGO.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">3</div>
+        <h4>Consensus Audit</h4>
+        <p>Mạng lưới AI Consensus chấm điểm và lập luận theo chuẩn mực kiểm toán Big4.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">4</div>
+        <h4>On-Chain Badge</h4>
+        <p>Phát hành Badge on-chain vĩnh viễn và cập nhật lên Public Registry.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Public Registry Section -->
+  <section id="registry-section" class="container" style="margin-top: 80px;">
+    <h2 class="serif-title section-title">
+      Public ESG Registry
+      <span style="font-size: 14px; font-weight: 400; color: var(--text-muted);">Real-time GenLayer State</span>
+    </h2>
+    
+    <!-- Search & Filters -->
+    <div class="search-filter-bar">
+      <div class="search-input-wrapper">
+        <i data-lucide="search"></i>
+        <input type="text" id="registry-search" placeholder="Search company by name or ticker..." oninput="filterRegistry()">
+      </div>
+      
+      <select id="filter-badge" class="filter-select" onchange="filterRegistry()">
+        <option value="ALL">All Badges</option>
+        <option value="GREEN">GREEN Verified</option>
+        <option value="YELLOW">YELLOW Conditional</option>
+        <option value="RED">RED Warning</option>
+      </select>
+
+      <select id="filter-industry" class="filter-select" onchange="filterRegistry()">
+        <option value="ALL">All Industries</option>
+        <option value="Apparel & Retail">Apparel & Retail</option>
+        <option value="Renewable Energy & Utilities">Renewable Energy & Utilities</option>
+        <option value="Automotive & Clean Energy">Automotive & Clean Energy</option>
+        <option value="Consumer Electronics">Consumer Electronics</option>
+        <option value="Oil & Gas Major">Oil & Gas Major</option>
+      </select>
+    </div>
+
+    <!-- Registry Grid -->
+    <div id="registry-grid" class="registry-grid">
+      <!-- Generated dynamically by JS -->
+    </div>
+  </section>
+
+  <!-- Featured Greenwashing Cases -->
+  <section class="container" style="margin-top: 80px;">
+    <h2 class="serif-title section-title" style="color: var(--danger);">Critical Greenwashing Warning Logs</h2>
+    <div class="cases-grid">
+      <div class="case-card">
+        <h3>Shell plc</h3>
+        <p>Báo cáo bền vững tuyên bố hướng tới Net Zero nhưng kế hoạch vốn cốt lõi vẫn tăng cường sản lượng dầu mỏ, thiếu cam kết Scope 3 (90% lượng thải).</p>
+        <div class="case-indicators">
+          <div class="case-indicator-item">
+            <i data-lucide="alert-triangle"></i>
+            <span>VAGUE_LANGUAGE: Thiếu các mục tiêu trung hạn cụ thể</span>
+          </div>
+          <div class="case-indicator-item">
+            <i data-lucide="alert-triangle"></i>
+            <span>MISSING_SCOPE3: Loại trừ phát thải sử dụng sản phẩm của khách hàng</span>
+          </div>
+        </div>
+        <a href="audit-detail.html?id=4" class="btn btn-secondary btn-primary" style="border-color: var(--danger); color: var(--danger); font-size: 13px;">
+          View Detailed Audit
+        </a>
+      </div>
+
+      <div class="case-card">
+        <h3>ExxonMobil</h3>
+        <p>Sử dụng các dự án Carbon Capture & Storage (CCS) để tăng cường khai thác dầu (EOR). Vận động hành lang ngược lại với các luật bảo vệ môi trường.</p>
+        <div class="case-indicators">
+          <div class="case-indicator-item">
+            <i data-lucide="alert-triangle"></i>
+            <span>CONTRADICTION: Tuyên bố xanh hóa nhưng vận động hành lang chống luật khí hậu</span>
+          </div>
+          <div class="case-indicator-item">
+            <i data-lucide="alert-triangle"></i>
+            <span>UNVERIFIED_OFFSETS: Dữ liệu bù trừ không có cơ sở xác thực</span>
+          </div>
+        </div>
+        <a href="audit-detail.html?id=5" class="btn btn-secondary btn-primary" style="border-color: var(--danger); color: var(--danger); font-size: 13px;">
+          View Detailed Audit
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-logo-desc">
+          <img src="assets/logo.svg" alt="ESGAudit Logo" style="height: 38px;">
+          <p>Hệ thống tự động hóa quy trình kiểm toán báo cáo phát triển bền vững và phát hiện tẩy xanh bằng Blockchain & Trí tuệ nhân tạo.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Ứng dụng</h4>
+          <ul>
+            <li><a href="submit-audit.html">Đăng ký kiểm toán</a></li>
+            <li><a href="index.html#registry-section">Registry toàn cầu</a></li>
+            <li><a href="investor-dashboard.html">Cổng nhà đầu tư</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Thành viên</h4>
+          <ul>
+            <li><a href="whistleblower.html">Thổi còi nhận thưởng</a></li>
+            <li><a href="whistleblower.html#leaderboard">Bảng vàng Whistleblower</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Tiêu chuẩn</h4>
+          <ul>
+            <li><a href="#">GRI Standards</a></li>
+            <li><a href="#">SASB Grid</a></li>
+            <li><a href="#">TCFD Pillars</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 ESGAudit. Phát triển trên mạng lưới GenLayer Blockchain.</p>
+        <p>Built for EU CSRD Compliance.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="app.js"></script>
+  
+  <script>
+    // Initialize registry rendering
+    function renderRegistry() {
+      const audits = getAudits();
+      const grid = document.getElementById("registry-grid");
+      grid.innerHTML = "";
+      
+      const completedAudits = audits.filter(a => a.status === "COMPLETED");
+      
+      completedAudits.forEach(audit => {
+        const details = JSON.parse(audit.ai_verdict_json);
+        const badgeClass = audit.badge_type.toLowerCase() + "-badge";
+        const badgeFile = `assets/badge-${audit.badge_type.toLowerCase()}.svg`;
+        
+        const card = document.createElement("a");
+        card.href = `audit-detail.html?id=${audit.id}`;
+        card.className = `registry-card ${badgeClass}`;
+        
+        card.innerHTML = `
+          <div class="registry-card-top">
+            <div class="company-meta">
+              <h3>${details.company_name}</h3>
+              <p>${details.industry} • ${details.country}</p>
+            </div>
+            <img src="${badgeFile}" alt="${audit.badge_type}" class="registry-stamp-img">
+          </div>
+          <div class="registry-card-score">
+            <div class="score-display">
+              <span class="score-num">${details.overall_score}</span>
+              <span class="score-max">/100</span>
+            </div>
+          </div>
+          <div class="registry-card-bottom">
+            <span>Audit #${audit.id}</span>
+            <span>Scope: ${details.audit_scope}</span>
+          </div>
+        `;
+        
+        grid.appendChild(card);
+      });
+    }
+
+    // Filter logic
+    function filterRegistry() {
+      const searchQuery = document.getElementById("registry-search").value.toLowerCase();
+      const badgeFilter = document.getElementById("filter-badge").value;
+      const industryFilter = document.getElementById("filter-industry").value;
+      
+      const cards = document.getElementsByClassName("registry-card");
+      const audits = getAudits();
+      
+      for(let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        // Parse corresponding audit
+        const hrefSplit = card.getAttribute("href").split("id=");
+        const id = parseInt(hrefSplit[hrefSplit.length - 1]);
+        const audit = audits.find(a => a.id === id);
+        const details = JSON.parse(audit.ai_verdict_json);
+        
+        const matchesSearch = details.company_name.toLowerCase().includes(searchQuery) || (details.ticker && details.ticker.toLowerCase().includes(searchQuery));
+        const matchesBadge = badgeFilter === "ALL" || audit.badge_type === badgeFilter;
+        const matchesIndustry = industryFilter === "ALL" || details.industry === industryFilter;
+        
+        if (matchesSearch && matchesBadge && matchesIndustry) {
+          card.style.display = "flex";
+        } else {
+          card.style.display = "none";
+        }
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderRegistry();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

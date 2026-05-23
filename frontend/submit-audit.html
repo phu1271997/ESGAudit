@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit ESG Report — ESGAudit</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Simulation Header -->
+  <header>
+    <div class="container nav-container">
+      <a href="index.html" class="logo-link">
+        <img src="assets/logo.svg" alt="ESGAudit Logo" class="logo-img">
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Public Registry</a>
+        <a href="submit-audit.html" class="active">Submit Report</a>
+        <a href="investor-dashboard.html">Investor Portal</a>
+        <a href="whistleblower.html">Whistleblower Bounty</a>
+        <button id="wallet-btn" class="btn btn-secondary" onclick="connectWallet()">
+          <i data-lucide="wallet"></i> Connect Wallet
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Submit Main Wizard Section -->
+  <main class="container" style="margin-top: 60px; max-width: 800px;">
+    <h1 class="serif-title" style="font-size: 36px; margin-bottom: 8px; text-align: center;">Register New ESG Audit</h1>
+    <p style="color: var(--text-muted); text-align: center; margin-bottom: 40px; font-weight: 300;">Submit reports & lock audit fees on GenLayer. AI verification consensus starts immediately.</p>
+
+    <!-- Wizard Steps Indicator -->
+    <div class="wizard-steps">
+      <div class="wizard-step active" id="step-ind-1">
+        <div class="step-circle">1</div>
+        <span class="step-label">Company Info</span>
+      </div>
+      <div class="wizard-step" id="step-ind-2">
+        <div class="step-circle">2</div>
+        <span class="step-label">Primary Report</span>
+      </div>
+      <div class="wizard-step" id="step-ind-3">
+        <div class="step-circle">3</div>
+        <span class="step-label">Supporting Evidence</span>
+      </div>
+      <div class="wizard-step" id="step-ind-4">
+        <div class="step-circle">4</div>
+        <span class="step-label">Review & Pay</span>
+      </div>
+    </div>
+
+    <!-- Wizard Form Cards -->
+    <div class="wizard-content-card" id="wizard-form">
+      
+      <!-- Panel 1: Company Info -->
+      <div class="wizard-panel active" id="panel-1">
+        <h3 class="serif-title" style="font-size: 20px; margin-bottom: 24px;">Doanh nghiệp & Lĩnh vực</h3>
+        <div class="form-group">
+          <label for="company-name">Tên chính thức doanh nghiệp *</label>
+          <input type="text" id="company-name" placeholder="Ví dụ: Patagonia, Inc. hoặc Ørsted A/S">
+          <p class="form-help">Tên đăng ký kinh doanh chính thức dùng để cấp chứng chỉ on-chain.</p>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="company-industry">Lĩnh vực hoạt động *</label>
+            <select id="company-industry">
+              <option value="Apparel & Retail">Apparel & Retail</option>
+              <option value="Renewable Energy & Utilities">Renewable Energy & Utilities</option>
+              <option value="Automotive & Clean Energy">Automotive & Clean Energy</option>
+              <option value="Consumer Electronics">Consumer Electronics</option>
+              <option value="Oil & Gas Major">Oil & Gas Major</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="company-country">Quốc gia đặt trụ sở *</label>
+            <input type="text" id="company-country" placeholder="Ví dụ: Denmark, United States">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="company-ticker">Mã chứng khoán (nếu có)</label>
+          <input type="text" id="company-ticker" placeholder="Ví dụ: TSLA, AAPL (Ghi 'Private' nếu chưa niêm yết)">
+        </div>
+      </div>
+
+      <!-- Panel 2: Primary Report -->
+      <div class="wizard-panel" id="panel-2">
+        <h3 class="serif-title" style="font-size: 20px; margin-bottom: 24px;">Tài liệu Báo cáo ESG chính</h3>
+        <div class="form-group">
+          <label for="report-url">Đường dẫn Báo cáo Phát triển Bền vững (Sustainability Report URL) *</label>
+          <input type="url" id="report-url" placeholder="https://company.com/sustainability-report-2025">
+          <p class="form-help">
+            <ctrl94> [!TIP]
+            Ưu tiên điền trang HTML công bố hoặc trang tóm tắt chỉ số thay vì trực tiếp file PDF quá dài để LLM trích xuất thông tin tối ưu và tránh quá tải token.
+          </p>
+        </div>
+      </div>
+
+      <!-- Panel 3: Supporting Evidence -->
+      <div class="wizard-panel" id="panel-3">
+        <h3 class="serif-title" style="font-size: 20px; margin-bottom: 12px;">Các minh chứng hỗ trợ chéo</h3>
+        <p style="color: var(--text-muted); font-size: 13.5px; margin-bottom: 24px;">Cung cấp tối thiểu 3 liên kết để AI đối soát tính chính xác (tin tức báo chí, dữ liệu chuỗi cung ứng, chứng chỉ carbon, báo cáo từ NGO).</p>
+        
+        <div class="evidence-urls-container" id="evidence-urls-container">
+          <!-- Dynamic Input rows -->
+          <div class="evidence-input-row">
+            <input type="url" class="evidence-url-input" placeholder="Minh chứng 1: Trang công bố chỉ số (vd: Sustainability Page URL)">
+          </div>
+          <div class="evidence-input-row">
+            <input type="url" class="evidence-url-input" placeholder="Minh chứng 2: Tin tức liên quan (vd: Reuters/Bloomberg news mention)">
+          </div>
+          <div class="evidence-input-row">
+            <input type="url" class="evidence-url-input" placeholder="Minh chứng 3: Báo cáo từ NGO hoặc cơ quan độc lập (vd: CDP/MSCI rating page)">
+          </div>
+        </div>
+
+        <button class="btn btn-secondary" style="margin-top: 16px; font-size: 13px;" onclick="addEvidenceRow()">
+          <i data-lucide="plus"></i> Add Evidence URL
+        </button>
+      </div>
+
+      <!-- Panel 4: Review and Payment -->
+      <div class="wizard-panel" id="panel-4">
+        <h3 class="serif-title" style="font-size: 20px; margin-bottom: 24px;">Phạm vi kiểm toán & Khóa phí (USDC)</h3>
+        
+        <label>Chọn phạm vi kiểm toán (Audit Scope)</label>
+        <div class="scope-selection-grid">
+          <div class="scope-card active" onclick="setScope('ALL', 2000, this)">
+            <i data-lucide="shield-check"></i>
+            <h4>Full ESG</h4>
+            <p>E + S + G Audit</p>
+          </div>
+          <div class="scope-card" onclick="setScope('E', 800, this)">
+            <i data-lucide="leaf"></i>
+            <h4>Environmental</h4>
+            <p>E Pillar Only</p>
+          </div>
+          <div class="scope-card" onclick="setScope('S', 800, this)">
+            <i data-lucide="users"></i>
+            <h4>Social</h4>
+            <p>S Pillar Only</p>
+          </div>
+          <div class="scope-card" onclick="setScope('G', 800, this)">
+            <i data-lucide="scale"></i>
+            <h4>Governance</h4>
+            <p>G Pillar Only</p>
+          </div>
+        </div>
+
+        <div class="payment-summary">
+          <h4 style="font-size: 15px; margin-bottom: 12px; color: var(--accent);">Tóm tắt chi phí</h4>
+          <div class="payment-row">
+            <span>Audit Service Fee (locked in Escrow)</span>
+            <span class="payment-val" id="fee-amount">2000 USDC</span>
+          </div>
+          <div class="payment-row">
+            <span>GenLayer AI Gas Fee (Consensus)</span>
+            <span class="payment-val">50 USDC</span>
+          </div>
+          <div class="payment-row">
+            <span>Total Locked Payment</span>
+            <span class="payment-val" id="total-amount">2050 USDC</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Wizard Actions Buttons -->
+    <div class="wizard-actions">
+      <button class="btn btn-secondary" id="back-btn" onclick="prevStep()" style="visibility: hidden;">
+        <i data-lucide="arrow-left"></i> Back
+      </button>
+      <button class="btn btn-primary" id="next-btn" onclick="nextStep()">
+        Next <i data-lucide="arrow-right"></i>
+      </button>
+    </div>
+
+    <!-- Progress Simulator (Hidden initially) -->
+    <div id="progress-card" class="wizard-content-card" style="display: none; text-align: center; padding: 60px 40px;">
+      <div class="circular-loader" style="margin-bottom: 30px;">
+        <!-- Simple spinner in pure CSS -->
+        <div class="spinner"></div>
+      </div>
+      <h3 class="serif-title" id="progress-title" style="font-size: 24px; margin-bottom: 12px;">Initiating GenLayer Consensus...</h3>
+      <p style="color: var(--text-muted); font-size: 15px;" id="progress-desc">Locking audit fee and preparing transaction queues...</p>
+    </div>
+
+  </main>
+
+  <style>
+    /* Custom simple spinner for the loading screen */
+    .spinner {
+      border: 4px solid var(--primary-border);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border-left-color: var(--primary);
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 ESGAudit. Phát triển trên mạng lưới GenLayer Blockchain.</p>
+        <p>Built for EU CSRD Compliance.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="app.js"></script>
+  <script>
+    let currentStep = 1;
+    let selectedScope = 'ALL';
+    let selectedFee = 2000;
+
+    function addEvidenceRow() {
+      const container = document.getElementById("evidence-urls-container");
+      const rows = container.getElementsByClassName("evidence-input-row");
+      if (rows.length >= 10) {
+        showToast("Limit Reached", "You can submit maximum 10 evidence URLs.", "warning");
+        return;
+      }
+      
+      const newRow = document.createElement("div");
+      newRow.className = "evidence-input-row";
+      newRow.innerHTML = `
+        <input type="url" class="evidence-url-input" placeholder="Evidence URL (e.g., carbon registry entries, supply chain disclosures)">
+        <button class="remove-btn" onclick="removeEvidenceRow(this)"><i data-lucide="trash-2"></i></button>
+      `;
+      container.appendChild(newRow);
+      lucide.createIcons();
+    }
+
+    function removeEvidenceRow(button) {
+      button.parentElement.remove();
+    }
+
+    function setScope(scope, fee, element) {
+      selectedScope = scope;
+      selectedFee = fee;
+      
+      // Toggle active classes
+      const cards = document.getElementsByClassName("scope-card");
+      for (let card of cards) {
+        card.classList.remove("active");
+      }
+      element.classList.add("active");
+      
+      // Update fee text
+      document.getElementById("fee-amount").innerText = `${fee} USDC`;
+      document.getElementById("total-amount").innerText = `${fee + 50} USDC`;
+    }
+
+    function updateStepIndicator() {
+      for (let i = 1; i <= 4; i++) {
+        const ind = document.getElementById(`step-ind-${i}`);
+        ind.classList.remove("active", "completed");
+        if (i === currentStep) {
+          ind.classList.add("active");
+        } else if (i < currentStep) {
+          ind.classList.add("completed");
+        }
+      }
+      
+      // Handle back button visibility
+      const backBtn = document.getElementById("back-btn");
+      if (currentStep === 1) {
+        backBtn.style.visibility = "hidden";
+      } else {
+        backBtn.style.visibility = "visible";
+      }
+      
+      // Handle next button label
+      const nextBtn = document.getElementById("next-btn");
+      if (currentStep === 4) {
+        nextBtn.innerHTML = `<i data-lucide="lock"></i> Lock Fee & Start Audit`;
+        nextBtn.className = "btn btn-primary btn-accent";
+      } else {
+        nextBtn.innerHTML = `Next <i data-lucide="arrow-right"></i>`;
+        nextBtn.className = "btn btn-primary";
+      }
+      lucide.createIcons();
+    }
+
+    function nextStep() {
+      if (currentStep === 1) {
+        const name = document.getElementById("company-name").value.trim();
+        const country = document.getElementById("company-country").value.trim();
+        if (!name || !country) {
+          showToast("Validation Error", "Please fill in all required company fields.", "warning");
+          return;
+        }
+      }
+      
+      if (currentStep === 2) {
+        const reportUrl = document.getElementById("report-url").value.trim();
+        if (!reportUrl) {
+          showToast("Validation Error", "Please provide the primary ESG report URL.", "warning");
+          return;
+        }
+      }
+
+      if (currentStep === 3) {
+        // Check if there are at least 3 filled evidence URLs
+        const inputs = document.getElementsByClassName("evidence-url-input");
+        let count = 0;
+        for (let input of inputs) {
+          if (input.value.trim()) count++;
+        }
+        if (count < 3) {
+          showToast("Evidence Required", "Please provide at least 3 supporting evidence URLs for cross-checking.", "warning");
+          return;
+        }
+      }
+
+      if (currentStep < 4) {
+        // Move panel
+        document.getElementById(`panel-${currentStep}`).classList.remove("active");
+        currentStep++;
+        document.getElementById(`panel-${currentStep}`).classList.add("active");
+        updateStepIndicator();
+      } else {
+        // Execute Audit Submission & Trigger AI evaluation
+        executeAuditPipeline();
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        document.getElementById(`panel-${currentStep}`).classList.remove("active");
+        currentStep--;
+        document.getElementById(`panel-${currentStep}`).classList.add("active");
+        updateStepIndicator();
+      }
+    }
+
+    function executeAuditPipeline() {
+      const companyName = document.getElementById("company-name").value.trim();
+      const reportUrl = document.getElementById("report-url").value.trim();
+      
+      const inputs = document.getElementsByClassName("evidence-url-input");
+      const evidenceUrls = [];
+      for (let input of inputs) {
+        if (input.value.trim()) {
+          evidenceUrls.push(input.value.trim());
+        }
+      }
+
+      // Hide wizard & actions, show loading simulator
+      document.getElementById("wizard-form").style.display = "none";
+      document.querySelector(".wizard-actions").style.display = "none";
+      document.getElementById("progress-card").style.display = "block";
+      
+      // Submit Transaction (mocked)
+      const auditId = submitAudit(companyName, reportUrl, evidenceUrls, selectedScope, selectedFee);
+      
+      // Trigger AI Consensus
+      setTimeout(() => {
+        document.getElementById("progress-title").innerText = "Executing Web.render Scrapers...";
+        document.getElementById("progress-desc").innerText = "AI agents are reading your sustainability report and cross-referencing web sources...";
+        
+        setTimeout(() => {
+          document.getElementById("progress-title").innerText = "Running AI Consensus Evaluator...";
+          document.getElementById("progress-desc").innerText = "Analyzing findings using GRI, SASB, and TCFD compliance guidelines...";
+          
+          triggerAudit(auditId, (completedAudit) => {
+            // Once completed, redirect to details page
+            window.location.href = `audit-detail.html?id=${auditId}`;
+          });
+        }, 1500);
+      }, 1500);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Whistleblower Bounty Portal — ESGAudit</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav-container">
+      <a href="index.html" class="logo-link">
+        <img src="assets/logo.svg" alt="ESGAudit Logo" class="logo-img">
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Public Registry</a>
+        <a href="submit-audit.html">Submit Report</a>
+        <a href="investor-dashboard.html">Investor Portal</a>
+        <a href="whistleblower.html" class="active">Whistleblower Bounty</a>
+        <button id="wallet-btn" class="btn btn-secondary" onclick="connectWallet()">
+          <i data-lucide="wallet"></i> Connect Wallet
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="margin-top: 60px;">
+    
+    <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 32px;">
+      
+      <!-- Whistleblower form section -->
+      <div>
+        <h1 class="serif-title" style="font-size: 36px; margin-bottom: 8px;">See Greenwashing?<br>Submit Evidence. Earn Bounty.</h1>
+        <p style="color: var(--text-muted); margin-bottom: 30px; font-weight: 300;">Help audit the truth. Provide verified documentation countering corporate sustainability claims.</p>
+
+        <!-- Form Card -->
+        <div class="card" id="form-card">
+          <h3 class="serif-title" style="font-size: 20px; margin-bottom: 24px;">Submit Counter-Evidence</h3>
+          
+          <div class="form-group">
+            <label for="challenge-company">Target Company *</label>
+            <select id="challenge-company" onchange="updateAuditDropdown()">
+              <!-- Generated dynamically -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="challenge-audit">Target Audit ID *</label>
+            <select id="challenge-audit">
+              <!-- Generated dynamically -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="challenge-evidence">Evidence Web Link (NGO report, satellite data, court ruling) *</label>
+            <input type="url" id="challenge-evidence" placeholder="https://www.greenpeace.org/report/leak-evidence">
+            <p class="form-help">Provide a direct URL showing evidence of the greenwashing or contradiction.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="challenge-reason">Detailed Explanation of Contradiction *</label>
+            <textarea id="challenge-reason" placeholder="Explain precisely how this evidence contradicts the company's published ESG reports (e.g. 'Company claims 90% emissions reduction but EPA filings reveal an increase of emissions at facility X')."></textarea>
+          </div>
+
+          <button class="btn btn-primary btn-accent" style="width: 100%; margin-top: 10px;" onclick="executeChallengeSubmission()">
+            <i data-lucide="shield-alert"></i> Submit Challenge & Start Re-Audit
+          </button>
+        </div>
+
+        <!-- Processing loader screen (Hidden initially) -->
+        <div class="card" id="processing-card" style="display: none; text-align: center; padding: 60px 40px;">
+          <div class="spinner" style="margin-bottom: 30px;"></div>
+          <h3 class="serif-title" id="proc-title" style="font-size: 24px; margin-bottom: 12px;">Registering Challenge On-Chain...</h3>
+          <p style="color: var(--text-muted); font-size: 15px;" id="proc-desc">Preparing transaction queues...</p>
+        </div>
+
+      </div>
+
+      <!-- Whistleblower Mechanism info and wall of fame -->
+      <aside>
+        
+        <!-- How it works -->
+        <div class="card" style="margin-bottom: 32px; background-color: var(--accent-light); border-color: var(--accent);">
+          <h3 class="serif-title" style="font-size: 18px; margin-bottom: 16px; color: #fff;">Bounty Mechanism</h3>
+          <ol style="margin-left: 20px; font-size: 13.5px; display: flex; flex-direction: column; gap: 12px;">
+            <li>Doanh nghiệp khi mua gói giám sát hoặc kiểm toán sẽ đóng góp một phần phí vào <strong>Whistleblower Bounty Pool</strong>.</li>
+            <li>Khi whistleblower gửi bằng chứng phản bác, hợp đồng sẽ kích hoạt quy trình AI Re-Audit.</li>
+            <li>AI Consensus đánh giá bằng chứng mới. Nếu phán quyết hạ điểm doanh nghiệp thành công, Challenge được tính là <strong>VALID</strong>.</li>
+            <li>Whistleblower được chuyển thưởng <strong>1,500 USDC</strong> trực tiếp vào ví. Doanh nghiệp bị giáng cấp badge.</li>
+          </ol>
+        </div>
+
+        <!-- Leaderboard Wall of fame -->
+        <div class="card bounty-leaderboard">
+          <h3 class="serif-title" style="font-size: 18px;">Successful Whistleblowers</h3>
+          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">Active address payouts for verified greenwashing detections.</p>
+          
+          <div class="leaderboard-list">
+            <div class="leaderboard-item">
+              <span class="leaderboard-address">0x3f1c...8A3b</span>
+              <span class="leaderboard-bounty">2,500 USDC</span>
+            </div>
+            <div class="leaderboard-item">
+              <span class="leaderboard-address">0x9d4a...F391</span>
+              <span class="leaderboard-bounty">1,500 USDC</span>
+            </div>
+            <div class="leaderboard-item">
+              <span class="leaderboard-address">0x7c92...E432</span>
+              <span class="leaderboard-bounty">1,500 USDC</span>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- CSS Loader Spinner -->
+  <style>
+    .spinner {
+      border: 4px solid var(--primary-border);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border-left-color: var(--primary);
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© 2026 ESGAudit. Phát triển trên mạng lưới GenLayer Blockchain.</p>
+        <p>Built for EU CSRD Compliance.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="app.js"></script>
+  <script>
+    function loadDropdowns() {
+      const audits = getAudits().filter(a => a.status === "COMPLETED");
+      const companySelect = document.getElementById("challenge-company");
+      
+      // Get unique company names
+      const companies = [...new Set(audits.map(a => a.company_name))];
+      
+      companySelect.innerHTML = "";
+      companies.forEach(c => {
+        const option = document.createElement("option");
+        option.value = c;
+        option.innerText = c;
+        companySelect.appendChild(option);
+      });
+
+      // Update audit IDs dropdown
+      updateAuditDropdown();
+      
+      // Auto-select audit ID from query parameters if present
+      const params = new URLSearchParams(window.location.search);
+      const queryAuditId = params.get("audit_id");
+      if (queryAuditId) {
+        const audit = audits.find(a => a.id === parseInt(queryAuditId));
+        if (audit) {
+          companySelect.value = audit.company_name;
+          updateAuditDropdown();
+          document.getElementById("challenge-audit").value = queryAuditId;
+        }
+      }
+    }
+
+    function updateAuditDropdown() {
+      const companyName = document.getElementById("challenge-company").value;
+      const audits = getAudits().filter(a => a.company_name === companyName && a.status === "COMPLETED");
+      const auditSelect = document.getElementById("challenge-audit");
+      
+      auditSelect.innerHTML = "";
+      audits.forEach(a => {
+        const option = document.createElement("option");
+        option.value = a.id;
+        option.innerText = `Audit #${a.id} (Score: ${JSON.parse(a.ai_verdict_json).overall_score}/100)`;
+        auditSelect.appendChild(option);
+      });
+    }
+
+    function executeChallengeSubmission() {
+      const auditId = document.getElementById("challenge-audit").value;
+      const evidenceUrl = document.getElementById("challenge-evidence").value.trim();
+      const reason = document.getElementById("challenge-reason").value.trim();
+
+      if (!evidenceUrl || !reason || !auditId) {
+        showToast("Validation Error", "Please fill in all required challenge fields.", "warning");
+        return;
+      }
+
+      // Hide form, show processing loader
+      document.getElementById("form-card").style.display = "none";
+      document.getElementById("processing-card").style.display = "block";
+
+      const challengeId = submitChallenge(auditId, evidenceUrl, reason);
+
+      setTimeout(() => {
+        document.getElementById("proc-title").innerText = "Executing Whistleblower recheck...";
+        document.getElementById("proc-desc").innerText = "AI is reviewing the original report against the submitted counter-evidence...";
+        
+        setTimeout(() => {
+          document.getElementById("proc-title").innerText = "GenLayer AI Consensus Re-evaluating...";
+          document.getElementById("proc-desc").innerText = "Validators are reaching consensus on the challenge validity...";
+          
+          processChallenge(challengeId, (challenge, updatedAudit) => {
+            // Redirect to detail page of the updated audit to show demoted badge!
+            window.location.href = `audit-detail.html?id=${updatedAudit.id}`;
+          });
+        }, 1500);
+      }, 1500);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadDropdowns();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

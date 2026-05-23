@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!-- Environmental (Leaf & Globe) -->
+  <g id="environmental" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12s4.477-10 10-10Z" stroke="#10B981" />
+    <path d="M12 6c-2 2-3 4-3 6s1 4 3 6c2-2 3-4 3-6s-1-4-3-6Z" fill="#047857" opacity="0.3" stroke="#10B981" />
+    <path d="M12 2v20M2 12h20" stroke="#10B981" stroke-width="1.5" />
+    <path d="M7 6c3 0 5 2 5 6s-2 6-5 6" stroke="#10B981" stroke-width="1.5" />
+    <path d="M17 6c-3 0-5 2-5 6s2 6 5 6" stroke="#10B981" stroke-width="1.5" />
+  </g>
+
+  <!-- Social (Community & Heart) -->
+  <g id="social" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#F59E0B" />
+    <circle cx="9" cy="7" r="4" stroke="#F59E0B" fill="#D97706" opacity="0.3" />
+    <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="#FBBF24" />
+    <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="#FBBF24" />
+  </g>
+
+  <!-- Governance (Balance Scale of Justice) -->
+  <g id="governance" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Center pole -->
+    <line x1="12" y1="2" x2="12" y2="22" stroke="#60A5FA" />
+    <!-- Base -->
+    <line x1="8" y1="22" x2="16" y2="22" stroke="#60A5FA" />
+    <!-- Cross beam -->
+    <line x1="5" y1="7" x2="19" y2="7" stroke="#60A5FA" />
+    
+    <!-- Left Plate -->
+    <path d="M5 7 L2 14 Q5 17 8 14 Z" stroke="#3B82F6" fill="#2563EB" opacity="0.3" />
+    <line x1="5" y1="7" x2="5" y2="14" stroke="#3B82F6" />
+    
+    <!-- Right Plate -->
+    <path d="M19 7 L16 14 Q19 17 22 14 Z" stroke="#3B82F6" fill="#2563EB" opacity="0.3" />
+    <line x1="19" y1="7" x2="19" y2="14" stroke="#3B82F6" />
+  </g>
+</svg>
